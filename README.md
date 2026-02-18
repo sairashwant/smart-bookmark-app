@@ -1,36 +1,17 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Project Summary
 
-## Getting Started
+Smart Bookmark App is a full-stack web application built with Next.js (App Router) and Supabase. It allows users to log in using Google OAuth, add and delete personal bookmarks, and view real-time updates across multiple tabs. Each user's data is securely isolated using Row Level Security (RLS), ensuring bookmarks remain private.
 
-First, run the development server:
+## Challenges & Solutions
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**1. Environment Variables Not Loading**  
+I encountered a `supabaseUrl is required` error because the `.env.local` file was placed in the wrong directory, and the variable names didn’t match the expected keys. I resolved this by moving the file to the project root, correcting the variable names, and restarting the development server.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**2. Google OAuth Not Enabled**  
+Login initially failed with an “Unsupported provider” error. The issue was that Google OAuth had not been configured in Supabase. I created OAuth credentials in Google Cloud, added the correct redirect URI, and connected the client ID and secret in Supabase.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**3. Realtime Not Updating Across Tabs**  
+The application did not sync between two open tabs. I discovered that the `bookmarks` table was not added to the `supabase_realtime` publication. After adding it under Database → Publications, real-time updates worked correctly.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**4. UI Contrast & Layout Issues**  
+The interface initially looked washed out, and the login appeared in multiple places. I improved contrast by using a clearer colour hierarchy and simplified the layout so that login appears only in the centre when logged out, and user controls appear in the navbar after authentication.
